@@ -41,19 +41,53 @@ password_element.send_keys(password)
 
 #find the login button
 login_button = driver.find_element(By.XPATH, "//button[@type='submit']")
-#click the logn button
+#click the login button
 login_button.click()
 time.sleep(10)
-#lets try this one out
-not_now = WebDriverWait(driver, 30).until(
+
+#locate the 'Save info' button
+save_info = WebDriverWait(driver, 30).until(
     EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Save info')]"))
 )
-not_now.click()
+#click the 'Save info' button
+save_info.click()
+
 time.sleep(5)
-#ik why now
-not_now2 = WebDriverWait(driver, 60).until(
+#locate the 'Not now' button
+not_now = WebDriverWait(driver, 60).until(
     EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Not Now')]"))
 )
-not_now2.click()
+#click the 'Not now' button
+not_now.click()
+time.sleep(10)
+#wait for the feed page to load
+#feed_element = WebDriverWait(driver, 10).until(
+#    EC.presence_of_element_located((By.XPATH, "//*[@id='mount_0_0_sA']/div/div/div[2]/div/div/div[1]/div[1]/div[2]/section/main/div[1]"))
+#)
+#feed_element.send_keys(Keys.ESCAPE)
+#find the login button
+login_button2 = driver.find_element(By.XPATH, "//button[@type='submit']")
+#click the login button
+login_button2.click()
+time.sleep(10)
+#list to store scraped usernames
+scraped_usernames = []
+
+#loop until we reach 500 users
+while len(scraped_usernames) < 500:
+    for influencer_account in influencer_accounts:
+        #navigate to the influencer's account page
+        driver.get(f"https://www.instagram.com/{influencer_account}/")
+
+        #wait for the account page to laod
+        account_element = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.XPATH, "//div[@class='account__header']"))
+        )
+
+        #find the first post on the account page
+        post_element = driver.find_element(By.XPATH, "//div[@class='_aagu']")
+
+        #click on the post to open it
+        post_element.click()
 time.sleep(9999999)
 driver.quit()
